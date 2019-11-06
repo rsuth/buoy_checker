@@ -3,7 +3,11 @@
 
 import requests
 import re
+import math
 
+# default: checks the torrey pines station (46225)
+# replace the "46225.txt" at the end of the url with with your preferred buoy 
+# id from the list here: https://www.ndbc.noaa.gov/
 BUOY_URL = 'https://www.ndbc.noaa.gov/data/realtime2/46225.txt'
 
 def get_raw_data():
@@ -23,7 +27,7 @@ def parse_raw_data(raw_data):
         return 'Error Parsing Data'
 
 def build_output_string(parsed_data):
-    wave_ft = float(parsed_data['wave_height'])*3.28
+    wave_ft = round(float(parsed_data['wave_height'])*3.28, 2)
     degrees = int(parsed_data['degrees'])
     cardinal = degrees_to_cardinal(degrees)
     return f"🌊 {wave_ft} ft @ {parsed_data['dom_period']}s from {degrees}° {cardinal} 🌊"
